@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plattens Pets — In-Home Pet & Horse Care</title>
+<meta name="description" content="Plattens Pets provides trusted in-home pet sitting and scheduled home visits for dogs, cats, rabbits and horses.">
+
+<!--
+  ============================================================
+  BUILD NOTES FOR THE CLIENT
+  ============================================================
+  1. LOGO: replace the file "Logo.PNG" in the project root with
+     your real logo. Recommended size: at least 240×240px,
+     transparent PNG. Until replaced, a placeholder brass
+     monogram plate is shown automatically.
+
+  2. GALLERY: the "Care Log" scrolling gallery expects 12 image
+     files named exactly:
+         Pet1.PNG, Pet2.PNG, Pet3.PNG ... Pet12.PNG
+     sitting in the same folder as this HTML file. Drop them
+     into your GitHub repo alongside index.html and they will
+     appear automatically — no code changes needed. If a file
+     is missing, a soft placeholder card is shown instead so the
+     layout never breaks.
+
+  3. FONTS load from Google Fonts (Fraunces, Public Sans, IBM
+     Plex Mono). If you need to work fully offline, these can be
+     self-hosted later.
+
+  4. The enquiry form at the bottom is styled but not wired to a
+     backend yet — connect it to your form handler / email
+     service of choice (e.g. Formspree, Netlify Forms) when ready.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#221E19;
+    --paper:#F5EFE3;
+    --paper-alt:#ECE3CE;
+    --paper-line: rgba(34,30,25,0.14);
+    --hunter:#1E3327;
+    --hunter-deep:#152720;
+    --hunter-light:#3C5B47;
+    --brass:#B8874B;
+    --brass-light:#D9B77C;
+    --brass-dim: rgba(184,135,75,0.35);
+    --brick:#7C3B28;
+    --sage:#7C8768;
+
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+    --max: 1180px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  img{ max-width:100%; display:block; }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:currentColor;
+    opacity:0.55;
+  }
+
+  h1,h2,h3{
+    font-family:var(--display);
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:3px;
+  }
+
+  /* ================= NAV ================= */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,239,227,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--paper-line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px;
+    max-width:var(--max); margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    text-decoration:none; color:var(--ink);
+  }
+  .logo-box{
+    width:44px; height:44px;
+    border-radius:6px;
+    border:1px solid var(--brass-dim);
+    background:var(--paper-alt);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .logo-box img{ width:100%; height:100%; object-fit:cover; }
+  .logo-fallback{
+    font-family:var(--display);
+    font-weight:600; font-size:16px; color:var(--brass);
+  }
+  .brand-name{
+    font-family:var(--display);
+    font-size:19px; font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .brand-tag{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--hunter-light);
+    margin-top:1px;
+  }
+
+  nav.links{
+    display:flex; align-items:center; gap:32px;
+  }
+  nav.links a{
+    text-decoration:none;
+    font-size:14.5px;
+    color:var(--ink);
+    position:relative;
+    padding:4px 0;
+  }
+  nav.links a::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:-2px;
+    height:1px; background:var(--brass);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .25s ease;
+  }
+  nav.links a:hover::after{ transform:scaleX(1); }
+
+  .btn{
+    font-family:var(--body);
+    font-weight:600;
+    font-size:14px;
+    padding:11px 22px;
+    border-radius:4px;
+    border:1px solid transparent;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .btn-brass{
+    background:var(--brass);
+    color:var(--hunter-deep);
+    border-color:var(--brass);
+  }
+  .btn-brass:hover{ background:var(--brass-light); transform:translateY(-1px); }
+  .btn-outline-dark{
+    border-color:var(--ink);
+    color:var(--ink);
+    background:transparent;
+  }
+  .btn-outline-dark:hover{ background:var(--ink); color:var(--paper); }
+  .btn-outline-light{
+    border-color:rgba(245,239,227,0.55);
+    color:var(--paper);
+    background:transparent;
+  }
+  .btn-outline-light:hover{ background:var(--paper); color:var(--hunter-deep); }
+
+  .menu-toggle{ display:none; }
+
+  /* ================= HERO ================= */
+  .hero{
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(184,135,75,0.18), transparent 60%),
+      linear-gradient(180deg, var(--hunter-deep), var(--hunter) 60%, var(--hunter));
+    color:var(--paper);
+    padding:96px 0 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:auto 0 0 0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--brass-dim), transparent);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:56px;
+    align-items:center;
+    padding-bottom:64px;
+  }
+  .hero h1{
+    font-size:clamp(34px, 4.6vw, 58px);
+    line-height:1.06;
+    margin:22px 0 22px;
+    color:var(--paper);
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--brass-light);
+  }
+  .hero .eyebrow{ color:var(--brass-light); }
+  .hero p.lead{
+    font-size:17.5px;
+    max-width:46ch;
+    color:rgba(245,239,227,0.82);
+    margin-bottom:34px;
+  }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  .hero-card{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:8px;
+    padding:26px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.45);
+    border:1px solid var(--paper-line);
+    transform:rotate(1.4deg);
+  }
+  .hero-card .stamp{
+    font-family:var(--mono);
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--brick);
+    border:1px solid var(--brick);
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:3px;
+    transform:rotate(-3deg);
+    margin-bottom:14px;
+  }
+  .hero-card h3{ font-size:20px; margin-bottom:12px; }
+  .care-file-row{
+    display:flex; justify-content:space-between;
+    font-family:var(--mono); font-size:12.5px;
+    padding:9px 0; border-top:1px dashed var(--paper-line);
+    color:var(--ink);
+  }
+  .care-file-row:first-of-type{ border-top:none; }
+  .care-file-row span:first-child{ color:rgba(34,30,25,0.55); }
+
+  .trust-strip{
+    border-top:1px solid rgba(245,239,227,0.14);
+    padding:22px 0;
+  }
+  .trust-inner{
+    display:flex; flex-wrap:wrap; gap:28px;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    color:rgba(245,239,227,0.65);
+  }
+  .trust-inner span{ white-space:nowrap; }
+
+  /* ================= SECTION BASICS ================= */
+  section{ padding:96px 0; }
+  .section-head{
+    max-width:640px;
+    margin-bottom:56px;
+  }
+  .section-head .eyebrow{ color:var(--hunter-light); margin-bottom:16px; }
+  .section-head h2{
+    font-size:clamp(28px, 3.4vw, 40px);
+    line-height:1.15;
+  }
+  .section-head p{
+    margin-top:16px;
+    color:rgba(34,30,25,0.72);
+    font-size:16.5px;
+    max-width:56ch;
+  }
+  .section-alt{ background:var(--paper-alt); }
+
+  /* ================= SERVICES ================= */
+  .services-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+  }
+  .service-card{
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:8px;
+    padding:36px;
+    position:relative;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .service-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 24px 40px -24px rgba(30,51,39,0.35);
+  }
+  .service-index{
+    font-family:var(--mono); font-size:12px; color:var(--brass);
+    letter-spacing:0.1em;
+  }
+  .service-card h3{
+    font-size:23px; margin:16px 0 12px;
+  }
+  .service-card p{ color:rgba(34,30,25,0.72); font-size:15.5px; margin-bottom:20px; }
+  .service-card ul{
+    list-style:none; margin:0; padding:0;
+    display:grid; gap:9px;
+  }
+  .service-card li{
+    font-size:14.5px;
+    display:flex; gap:10px; align-items:flex-start;
+    color:var(--ink);
+  }
+  .service-card li::before{
+    content:"";
+    width:6px; height:6px; margin-top:7px;
+    background:var(--brass); border-radius:1px; flex-shrink:0;
+    transform:rotate(45deg);
+  }
+
+  /* ================= SPECIES TABS ================= */
+  .species-strip{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    border:1px solid var(--paper-line);
+    border-radius:8px;
+    overflow:hidden;
+    background:var(--paper);
+  }
+  .species-tab{
+    padding:34px 24px;
+    border-right:1px solid var(--paper-line);
+    position:relative;
+  }
+  .species-tab:last-child{ border-right:none; }
+  .species-tab svg{
+    width:34px; height:34px;
+    color:var(--hunter);
+    margin-bottom:16px;
+  }
+  .species-tab h4{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:18px;
+    margin:0 0 8px;
+  }
+  .species-tab p{
+    font-size:13.8px;
+    color:rgba(34,30,25,0.65);
+    margin:0;
+  }
+  .species-tab .file-no{
+    position:absolute; top:16px; right:18px;
+    font-family:var(--mono); font-size:10.5px;
+    color:rgba(34,30,25,0.35);
+  }
+
+  /* ================= GALLERY (SIGNATURE) ================= */
+  .gallery-section{
+    background:var(--hunter-deep);
+    color:var(--paper);
+    padding-bottom:72px;
+  }
+  .gallery-section .section-head .eyebrow{ color:var(--brass-light); }
+  .gallery-section .section-head h2{ color:var(--paper); }
+  .gallery-section .section-head p{ color:rgba(245,239,227,0.7); }
+
+  .rail-wrap{ position:relative; }
+  .rail-line{
+    position:absolute; top:38px; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--brass-dim) 6%, var(--brass-dim) 94%, transparent);
+  }
+
+  .gallery-scroll{
+    display:flex;
+    gap:26px;
+    overflow-x:auto;
+    padding:70px 4px 28px;
+    scroll-snap-type:x proximity;
+    scrollbar-width:thin;
+    scrollbar-color:var(--brass) transparent;
+  }
+  .gallery-scroll::-webkit-scrollbar{ height:6px; }
+  .gallery-scroll::-webkit-scrollbar-thumb{ background:var(--brass); border-radius:3px; }
+  .gallery-scroll::-webkit-scrollbar-track{ background:rgba(245,239,227,0.08); }
+
+  .care-card{
+    flex:0 0 210px;
+    scroll-snap-align:start;
+    background:var(--paper);
+    padding:12px 12px 16px;
+    border-radius:2px;
+    box-shadow:0 18px 34px -16px rgba(0,0,0,0.55);
+    position:relative;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .care-card:nth-child(odd){ transform:rotate(-2.4deg); }
+  .care-card:nth-child(even){ transform:rotate(2.1deg); }
+  .care-card:hover{ transform:rotate(0deg) translateY(-6px); box-shadow:0 26px 44px -16px rgba(0,0,0,0.6); z-index:2; }
+
+  .care-card::before{
+    content:"";
+    position:absolute; top:-14px; left:50%; translate:-50% 0;
+    width:26px; height:14px;
+    background:var(--brass);
+    border-radius:2px;
+    box-shadow:0 2px 4px rgba(0,0,0,0.35);
+  }
+  .care-card .photo-frame{
+    width:100%; aspect-ratio:4/5;
+    background:var(--paper-alt);
+    border:1px solid var(--paper-line);
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .care-card img{ width:100%; height:100%; object-fit:cover; }
+  .photo-fallback{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:rgba(34,30,25,0.4);
+    font-family:var(--mono); font-size:10.5px; text-align:center; padding:0 10px;
+    text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .photo-fallback svg{ width:26px; height:26px; }
+
+  .care-card figcaption{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.04em;
+    color:var(--ink);
+    margin:12px 2px 0;
+    display:flex; justify-content:space-between;
+  }
+  .care-card figcaption .species{ color:var(--brick); }
+
+  .gallery-controls{
+    display:flex; justify-content:flex-end; gap:10px; margin-top:6px;
+  }
+  .rail-btn{
+    width:38px; height:38px;
+    border-radius:50%;
+    border:1px solid rgba(245,239,227,0.3);
+    background:transparent;
+    color:var(--paper);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .rail-btn:hover{ background:rgba(245,239,227,0.1); border-color:var(--brass); }
+  .rail-btn svg{ width:16px; height:16px; }
+
+  /* ================= PROCESS ================= */
+  .process-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:0;
+    position:relative;
+  }
+  .process-step{
+    padding:0 24px 0 0;
+    position:relative;
+  }
+  .process-step:not(:last-child)::after{
+    content:"";
+    position:absolute; top:20px; right:0; left:calc(100% - 24px);
+    height:1px;
+    background:var(--paper-line);
+  }
+  .process-num{
+    font-family:var(--mono);
+    font-size:13px; color:var(--brass);
+    border:1px solid var(--brass-dim);
+    width:38px; height:38px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:20px;
+  }
+  .process-step h4{
+    font-family:var(--display); font-size:18px; font-weight:600;
+    margin-bottom:10px;
+  }
+  .process-step p{ font-size:14.5px; color:rgba(34,30,25,0.68); }
+
+  /* ================= HORSE SPOTLIGHT ================= */
+  .spotlight{
+    background:linear-gradient(160deg, var(--hunter), var(--hunter-deep));
+    color:var(--paper);
+    border-radius:10px;
+    padding:64px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:52px;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .spotlight::before{
+    content:"";
+    position:absolute; right:-60px; top:-60px;
+    width:260px; height:260px;
+    border:1px solid rgba(184,135,75,0.25);
+    border-radius:50%;
+  }
+  .spotlight-icon{ width:46px; height:46px; color:var(--brass-light); margin-bottom:22px; }
+  .spotlight h2{ color:var(--paper); font-size:clamp(26px,3vw,34px); margin-bottom:16px; }
+  .spotlight p{ color:rgba(245,239,227,0.78); font-size:16px; margin-bottom:26px; max-width:48ch; }
+  .spotlight-list{ list-style:none; padding:0; margin:0; display:grid; gap:12px; }
+  .spotlight-list li{
+    display:flex; gap:12px; font-size:14.5px; color:rgba(245,239,227,0.85);
+  }
+  .spotlight-list li::before{ content:"—"; color:var(--brass-light); flex-shrink:0; }
+
+  .spotlight-card{
+    background:rgba(245,239,227,0.06);
+    border:1px solid rgba(245,239,227,0.16);
+    border-radius:8px;
+    padding:28px;
+  }
+  .spotlight-card .eyebrow{ color:var(--brass-light); margin-bottom:18px; }
+  .spotlight-card .care-file-row{ border-top-color:rgba(245,239,227,0.16); color:var(--paper); }
+  .spotlight-card .care-file-row span:first-child{ color:rgba(245,239,227,0.55); }
+
+  /* ================= TESTIMONIALS ================= */
+  .testimonial-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:26px;
+  }
+  .testimonial{
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:8px;
+    padding:30px;
+  }
+  .testimonial .quote-mark{
+    font-family:var(--display);
+    font-size:42px; color:var(--brass);
+    line-height:1; display:block; margin-bottom:6px;
+  }
+  .testimonial p.quote{
+    font-size:15.5px; color:var(--ink); margin-bottom:22px;
+    font-family:var(--display); font-weight:400; font-style:italic;
+    line-height:1.5;
+  }
+  .testimonial .attribution{
+    font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:0.06em;
+    color:rgba(34,30,25,0.55);
+    border-top:1px dashed var(--paper-line);
+    padding-top:14px;
+  }
+
+  /* ================= CONTACT ================= */
+  .contact-wrap{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:60px;
+  }
+  .contact-info h2{ font-size:clamp(28px,3.2vw,38px); margin-bottom:18px; }
+  .contact-info p{ color:rgba(34,30,25,0.72); font-size:16px; margin-bottom:28px; max-width:44ch; }
+  .contact-detail{
+    display:flex; gap:14px; align-items:flex-start;
+    margin-bottom:20px;
+  }
+  .contact-detail svg{ width:20px; height:20px; color:var(--brass); flex-shrink:0; margin-top:2px; }
+  .contact-detail .label{ font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(34,30,25,0.5); }
+  .contact-detail .value{ font-size:15px; }
+
+  form.enquiry{
+    background:var(--paper-alt);
+    border:1px solid var(--paper-line);
+    border-radius:8px;
+    padding:36px;
+  }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .field.full{ grid-column:1 / -1; }
+  .field label{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em;
+    color:rgba(34,30,25,0.6);
+  }
+  .field input, .field select, .field textarea{
+    font-family:var(--body);
+    font-size:15px;
+    padding:12px 14px;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--brass);
+    outline-offset:1px;
+    border-color:var(--brass);
+  }
+  .field textarea{ resize:vertical; min-height:100px; font-family:var(--body); }
+  form.enquiry .btn{ width:100%; justify-content:center; padding:14px; font-size:15px; }
+
+  /* ================= FOOTER ================= */
+  footer{
+    background:var(--hunter-deep);
+    color:rgba(245,239,227,0.7);
+    padding:56px 0 28px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr;
+    gap:40px;
+    padding-bottom:36px;
+    border-bottom:1px solid rgba(245,239,227,0.12);
+  }
+  .footer-brand{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .footer-brand .logo-box{ background:rgba(245,239,227,0.06); border-color:rgba(184,135,75,0.4); }
+  .footer-brand .brand-name{ color:var(--paper); }
+  footer p.tag{ font-size:13.5px; max-width:32ch; color:rgba(245,239,227,0.55); }
+  footer h5{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.1em;
+    color:rgba(245,239,227,0.45);
+    margin:0 0 16px;
+  }
+  footer ul{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+  footer a{ text-decoration:none; font-size:14px; color:rgba(245,239,227,0.75); }
+  footer a:hover{ color:var(--brass-light); }
+  .footer-bottom{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    padding-top:24px;
+    font-family:var(--mono); font-size:11.5px;
+    color:rgba(245,239,227,0.4);
+  }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width: 980px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-card{ transform:none; }
+    .services-grid{ grid-template-columns:1fr; }
+    .species-strip{ grid-template-columns:1fr 1fr; }
+    .species-tab:nth-child(2){ border-right:none; }
+    .process-grid{ grid-template-columns:1fr 1fr; gap:36px 24px; }
+    .process-step::after{ display:none; }
+    .spotlight{ grid-template-columns:1fr; padding:44px 28px; }
+    .testimonial-grid{ grid-template-columns:1fr; }
+    .contact-wrap{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+  }
+
+  @media (max-width: 720px){
+    nav.links{ display:none; }
+    .menu-toggle{
+      display:flex; align-items:center; justify-content:center;
+      width:40px; height:40px; border:1px solid var(--paper-line); border-radius:4px;
+      background:transparent; cursor:pointer;
+    }
+    .nav .btn-outline-dark{ display:none; }
+    .form-row{ grid-template-columns:1fr; }
+    section{ padding:64px 0; }
+    .species-strip{ grid-template-columns:1fr; }
+    .species-tab{ border-right:none; border-bottom:1px solid var(--paper-line); }
+    .species-tab:last-child{ border-bottom:none; }
+    .footer-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="site">
+  <div class="nav">
+    <a href="#top" class="brand">
+      <span class="logo-box">
+        <img src="Logo.PNG" alt="Plattens Pets logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="logo-fallback" style="display:none;">PP</span>
+      </span>
+      <span>
+        <span class="brand-name">Plattens Pets</span>
+        <span class="brand-tag">In-home care, on file</span>
+      </span>
+    </a>
+    <nav class="links">
+      <a href="#services">Services</a>
+      <a href="#species">Who we care for</a>
+      <a href="#gallery">Care log</a>
+      <a href="#process">How it works</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <a href="#contact" class="btn btn-outline-dark">Enquire</a>
+      <a href="#contact" class="btn btn-brass">Book a visit</a>
+      <button class="menu-toggle" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="1" y1="4" x2="17" y2="4"/><line x1="1" y1="9" x2="17" y2="9"/><line x1="1" y1="14" x2="17" y2="14"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<div id="top" class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Dogs · Cats · Rabbits · Horses</span>
+      <h1>Care for your animals,<br><em>kept exactly where they live.</em></h1>
+      <p class="lead">Plattens Pets is an in-home sitting service — either a dedicated sitter staying at your
+        property, or scheduled visits to feed, exercise and settle your animals while you're away. No kennels,
+        no catteries, no strange horse boxes. Just your own home, held together.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-brass">Check availability</a>
+        <a href="#process" class="btn btn-outline-light">See how it works</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <span class="stamp">Care file — open</span>
+      <h3>Tonight's visit plan</h3>
+      <div class="care-file-row"><span>Property</span><span>Home visit, 6:30pm</span></div>
+      <div class="care-file-row"><span>Animals on site</span><span>2 dogs, 1 rabbit</span></div>
+      <div class="care-file-row"><span>Feeding</span><span>As per instructions</span></div>
+      <div class="care-file-row"><span>Medication</span><span>None required</span></div>
+      <div class="care-file-row"><span>Update sent</span><span>Photo + note</span></div>
+    </div>
+  </div>
+
+  <div class="trust-strip">
+    <div class="wrap trust-inner">
+      <span>Fully insured &amp; DBS-checked</span>
+      <span>Meet &amp; greet before every booking</span>
+      <span>Photo updates on every visit</span>
+      <span>Small dogs to stabled horses</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Two ways we care</span>
+      <h2>Whichever suits your household, we come to it.</h2>
+      <p>Every booking happens on your ground — your house, your paddock, your routine. You choose how much
+        company your animals need while you're away.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-index">Service 01</span>
+        <h3>Overnight &amp; extended home stays</h3>
+        <p>A dedicated sitter moves into your home for the length of your trip, keeping your animals on their
+          normal routine, in familiar surroundings, day and night.</p>
+        <ul>
+          <li>One sitter, one household — no shared shifts</li>
+          <li>Feeding, walking and litter/stable routines maintained exactly as you leave them</li>
+          <li>Post, plants and lights kept looking lived-in</li>
+          <li>Daily photo &amp; written update</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <span class="service-index">Service 02</span>
+        <h3>Scheduled home visits</h3>
+        <p>For shorter absences, we call in at agreed times to feed, exercise, muck out or simply keep your
+          animals company — without anyone staying overnight.</p>
+        <ul>
+          <li>Visits from 30 minutes to a full afternoon</li>
+          <li>Once daily, twice daily, or a full turnout-to-stable round for horses</li>
+          <li>Flexible, one-off or recurring bookings</li>
+          <li>Same photo &amp; written update after every call</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SPECIES ================= -->
+<section id="species" class="section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Who we care for</span>
+      <h2>Four species, one standard of care.</h2>
+      <p>Every sitter is matched to your animals by experience, not availability — including the handling and
+        yard knowledge that horses call for.</p>
+    </div>
+
+    <div class="species-strip">
+      <div class="species-tab">
+        <span class="file-no">FILE 01</span>
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+          <circle cx="13" cy="14" r="2.6"/><circle cx="20" cy="10.5" r="2.6"/><circle cx="27" cy="14" r="2.6"/><circle cx="30" cy="21" r="2.6"/>
+          <path d="M20 20c-6 0-10 4-10 8.5 0 3 2.4 4.5 5.4 4.5 2 0 2.9-1 4.6-1s2.6 1 4.6 1c3 0 5.4-1.5 5.4-4.5 0-4.5-4-8.5-10-8.5z"/>
+        </svg>
+        <h4>Dogs</h4>
+        <p>Walks, feeding, medication and company suited to your dog's own routine and energy level.</p>
+      </div>
+
+      <div class="species-tab">
+        <span class="file-no">FILE 02</span>
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+          <path d="M13 12 10 6M27 12l3-6"/>
+          <path d="M13 12c-4 3-6 8-6 12.5C7 30.5 12.5 35 20 35s13-4.5 13-10.5c0-4.5-2-9.5-6-12.5-2 1.5-4.5 2.3-7 2.3s-5-.8-7-2.3z"/>
+          <path d="M15 22l-2-1M25 22l2-1M17 27c1.2 1 4.8 1 6 0"/>
+        </svg>
+        <h4>Cats</h4>
+        <p>Litter, feeding and free-roam check-ins for cats who'd rather stay in charge of their own home.</p>
+      </div>
+
+      <div class="species-tab">
+        <span class="file-no">FILE 03</span>
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+          <path d="M14 16 12 6c-.3-1.6 1.4-2.7 2.6-1.6L20 9"/>
+          <path d="M26 16l2-10c.3-1.6-1.4-2.7-2.6-1.6L20 9"/>
+          <ellipse cx="20" cy="23" rx="10" ry="9"/>
+          <circle cx="17" cy="21" r="1"/>
+        </svg>
+        <h4>Rabbits</h4>
+        <p>Hutch or house rabbits — feeding, cleaning out and the gentle handling they're used to.</p>
+      </div>
+
+      <div class="species-tab">
+        <span class="file-no">FILE 04</span>
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+          <path d="M9 30c0-7 2-11 5-14 1-3.5 4-7 9-7 4 2 3 5 1 6 3 .5 5 3 5 6l1 3-3-1c-.5 3-2.5 4.5-5 5v6"/>
+          <path d="M13 22c-1.5 0-3-1-3-2.5"/>
+          <circle cx="19" cy="12.5" r="0.8" fill="currentColor" stroke="none"/>
+        </svg>
+        <h4>Horses</h4>
+        <p>Turnout, stabling, hay, water and grooming rounds from sitters confident on a yard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY (SIGNATURE) ================= -->
+<section id="gallery" class="gallery-section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The care log</span>
+      <h2>A handful of the animals we've looked after.</h2>
+      <p>Every visit gets logged with a photo. Here's a clip from the board — drag or scroll through.</p>
+    </div>
+  </div>
+
+  <div class="wrap rail-wrap">
+    <div class="rail-line" aria-hidden="true"></div>
+    <div class="gallery-scroll" id="gallery-scroll" tabindex="0" aria-label="Scrollable gallery of pets previously cared for">
+      <!-- Pet1.PNG through Pet12.PNG — drop matching files into the repo root -->
+    </div>
+    <div class="gallery-controls">
+      <button class="rail-btn" id="rail-prev" aria-label="Scroll gallery left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="rail-btn" id="rail-next" aria-label="Scroll gallery right">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How a booking works</span>
+      <h2>From first message to a safe return home.</h2>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-step">
+        <div class="process-num">01</div>
+        <h4>Get in touch</h4>
+        <p>Tell us your dates, your animals and your address. We'll confirm a sitter is available nearby.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">02</div>
+        <h4>Meet &amp; greet</h4>
+        <p>Your sitter visits beforehand to meet the animals, walk the property or yard, and note the routine.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">03</div>
+        <h4>Care, logged</h4>
+        <p>Every visit or overnight stay is followed by a photo and a written note, so you always know how things are.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">04</div>
+        <h4>Home, as you left it</h4>
+        <p>Animals settled, house or yard tidy, and a full handover note waiting for you when you're back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HORSE SPOTLIGHT ================= -->
+<section class="section-alt">
+  <div class="wrap">
+    <div class="spotlight">
+      <div>
+        <svg class="spotlight-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3">
+          <path d="M9 30c0-7 2-11 5-14 1-3.5 4-7 9-7 4 2 3 5 1 6 3 .5 5 3 5 6l1 3-3-1c-.5 3-2.5 4.5-5 5v6"/>
+          <path d="M13 22c-1.5 0-3-1-3-2.5"/>
+        </svg>
+        <span class="eyebrow">Not every sitter covers a yard</span>
+        <h2>Horses, cared for by people who know a yard.</h2>
+        <p>Horses aren't an add-on for us — sitters taking on equine bookings are matched by hands-on experience,
+          not just willingness. That means someone confident with turnout, stabling and the routine your horse
+          already knows.</p>
+        <ul class="spotlight-list">
+          <li>Turnout and bring-in on your usual schedule</li>
+          <li>Mucking out, hay, feed and water rounds</li>
+          <li>Rug changes and basic grooming</li>
+          <li>Comfortable working alongside livery yards and DIY setups</li>
+        </ul>
+      </div>
+
+      <div class="spotlight-card">
+        <span class="eyebrow">Care file — sample</span>
+        <div class="care-file-row"><span>Animal</span><span>1 horse, DIY livery</span></div>
+        <div class="care-file-row"><span>Rounds</span><span>7am &amp; 5pm</span></div>
+        <div class="care-file-row"><span>Turnout</span><span>Field, weather dependent</span></div>
+        <div class="care-file-row"><span>Rug</span><span>Change per forecast</span></div>
+        <div class="care-file-row"><span>Update</span><span>Photo after each round</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">On file</span>
+      <h2>What people tell us afterwards.</h2>
+    </div>
+
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <span class="quote-mark">&ldquo;</span>
+        <p class="quote">Came home to a settled dog, a tidy kitchen and a note explaining exactly how the week had gone. Nothing left to guess.</p>
+        <div class="attribution">Home visit client · Two dogs</div>
+      </div>
+      <div class="testimonial">
+        <span class="quote-mark">&ldquo;</span>
+        <p class="quote">Finding someone confident enough for the horse as well as the cats at home was the whole reason we booked. Both were relaxed when we got back.</p>
+        <div class="attribution">Overnight stay client · Horse &amp; cats</div>
+      </div>
+      <div class="testimonial">
+        <span class="quote-mark">&ldquo;</span>
+        <p class="quote">The rabbits don't take to strangers easily, but the update photos said otherwise. Booking again for our next trip.</p>
+        <div class="attribution">Scheduled visits client · Rabbits</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="section-alt">
+  <div class="wrap contact-wrap">
+    <div class="contact-info">
+      <span class="eyebrow">Start a care file</span>
+      <h2>Tell us about your animals.</h2>
+      <p>Send over your dates and a little about who we'll be looking after. We'll come back to you to arrange
+        a free meet &amp; greet before anything is confirmed.</p>
+
+      <div class="contact-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg>
+        <div><span class="label">Email</span><br><span class="value">hello@plattenspets.example</span></div>
+      </div>
+      <div class="contact-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2C10 21 3 14 3 6a2 2 0 0 1 2-2z"/></svg>
+        <div><span class="label">Phone</span><br><span class="value">01234 567 890</span></div>
+      </div>
+      <div class="contact-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <div><span class="label">Coverage area</span><br><span class="value">Add your service area here</span></div>
+      </div>
+    </div>
+
+    <form class="enquiry" onsubmit="event.preventDefault(); alert('This form is a design placeholder — connect it to your form handler.');">
+      <div class="form-row">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" type="text" placeholder="Jane Smith" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="jane@email.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="animal">Animal(s)</label>
+          <select id="animal">
+            <option>Dog</option>
+            <option>Cat</option>
+            <option>Rabbit</option>
+            <option>Horse</option>
+            <option>More than one type</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="service">Service</label>
+          <select id="service">
+            <option>Overnight / extended stay</option>
+            <option>Scheduled home visits</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="field full" style="margin-bottom:18px;">
+        <label for="dates">Dates needed</label>
+        <input id="dates" type="text" placeholder="e.g. 12–19 September">
+      </div>
+      <div class="field full" style="margin-bottom:22px;">
+        <label for="message">Tell us about your animals</label>
+        <textarea id="message" placeholder="Names, routine, anything we should know..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-brass">Send enquiry</button>
+    </form>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="logo-box">
+            <img src="Logo.PNG" alt="Plattens Pets logo"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none;">PP</span>
+          </span>
+          <span class="brand-name">Plattens Pets</span>
+        </div>
+        <p class="tag">In-home pet sitting and scheduled visits for dogs, cats, rabbits and horses.</p>
+      </div>
+      <div>
+        <h5>Site</h5>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#species">Who we care for</a></li>
+          <li><a href="#gallery">Care log</a></li>
+          <li><a href="#process">How it works</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Overnight stays</a></li>
+          <li><a href="#services">Scheduled visits</a></li>
+          <li><a href="#species">Horse care</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:hello@plattenspets.example">hello@plattenspets.example</a></li>
+          <li><a href="tel:01234567890">01234 567 890</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Plattens Pets (placeholder name). All rights reserved.</span>
+      <span>Insured &amp; DBS-checked care, on file.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Build the 12-image gallery: Pet1.PNG ... Pet12.PNG
+  // Missing images fall back to a quiet placeholder so the layout never breaks.
+  (function(){
+    var species = ['Dog','Cat','Rabbit','Horse'];
+    var rail = document.getElementById('gallery-scroll');
+    var frag = document.createDocumentFragment();
+
+    for (var i = 1; i <= 12; i++) {
+      var fileName = 'Pet' + i + '.PNG';
+      var sp = species[(i - 1) % species.length];
+
+      var card = document.createElement('figure');
+      card.className = 'care-card';
+
+      var frame = document.createElement('div');
+      frame.className = 'photo-frame';
+
+      var img = document.createElement('img');
+      img.src = fileName;
+      img.alt = 'Photo from a previous ' + sp.toLowerCase() + ' care visit';
+      img.loading = 'lazy';
+      img.onerror = function(){
+        var fb = document.createElement('div');
+        fb.className = 'photo-fallback';
+        fb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="9" cy="10.5" r="1.6"/><path d="M21 15l-5.5-5.5L7 18"/></svg><span>Image pending</span>';
+        this.replaceWith(fb);
+      };
+
+      frame.appendChild(img);
+      card.appendChild(frame);
+
+      var caption = document.createElement('figcaption');
+      caption.innerHTML = '<span>File 0' + (i < 10 ? '0' + i : i) + '</span><span class="species">' + sp + '</span>';
+      card.appendChild(caption);
+
+      frag.appendChild(card);
+    }
+    rail.appendChild(frag);
+
+    document.getElementById('rail-prev').addEventListener('click', function(){
+      rail.scrollBy({left: -460, behavior: 'smooth'});
+    });
+    document.getElementById('rail-next').addEventListener('click', function(){
+      rail.scrollBy({left: 460, behavior: 'smooth'});
+    });
+  })();
+</script>
+
+</body>
+</html>
